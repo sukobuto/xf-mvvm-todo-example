@@ -1,6 +1,8 @@
 ﻿using Prism.Unity;
 using TodoMvvm.Views;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TodoMvvm
 {
     public partial class App : PrismApplication
