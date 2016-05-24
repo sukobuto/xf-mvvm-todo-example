@@ -15,7 +15,7 @@
       <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
       <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />
     </StackLayout>
-    <ListView ItemsSource="{Binding TodoItems}">
+    <ListView ItemsSource="{Binding TodoItems}" SelectedItem="{Binding SelectedItem.Value, Mode=TwoWay}">
       <ListView.RowHeight>
         <!--
           ListView の行は高さが固定で、内容に応じて変化しないので自分で設定する必要がある。

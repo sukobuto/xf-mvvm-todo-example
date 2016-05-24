@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
+using Prism.Services;
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,9 @@ namespace TodoMvvm.ViewModels
 
         public ReactiveCollection<TodoItem> TodoItems { get; } = new ReactiveCollection<TodoItem>();
 
-        public MainPageViewModel()
+        public ReactiveProperty<TodoItem> SelectedItem { get; } = new ReactiveProperty<TodoItem>();
+
+        public MainPageViewModel(IPageDialogService pageDialogService)
         {
             this.AddNewItem = this.NewItemsText
                 .Select(x => !string.IsNullOrWhiteSpace(x)) // NewItemsText の状況から bool に変換
@@ -38,6 +41,18 @@ namespace TodoMvvm.ViewModels
                     this.TodoItems.AddOnScheduler(item);
                     this.NewItemsText.Value = "";
                     await this._todoItemRepository.SaveItemAsync(item);
+                });
+
+            // アイテムタップ時の動作を定義
+            this.SelectedItem
+                .Where(item => item != null)
+                .Subscribe(async item => {
+                    if (await pageDialogService.DisplayAlert("削除します。よろしいですか？", item.Text, "はい", "いいえ")) {
+                        item.Delete = true;
+                        this.TodoItems.RemoveOnScheduler(item);
+                        await _todoItemRepository.SaveItemAsync(item);
+                    }
+                    this.SelectedItem.Value = null;
                 });
         }
 
