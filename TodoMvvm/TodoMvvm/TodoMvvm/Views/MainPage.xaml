@@ -5,7 +5,39 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="TodoMvvm.Views.MainPage"
              Title="MainPage">
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+  
+  <StackLayout>
+    <StackLayout.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </StackLayout.Padding>
     <Label Text="{Binding Title}" />
+    <StackLayout BackgroundColor="#f0f7ff" Padding="5" Orientation="Horizontal">
+      <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
+      <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />
+    </StackLayout>
+    <ListView ItemsSource="{Binding TodoItems}">
+      <ListView.RowHeight>
+        <!--
+          ListView の行は高さが固定で、内容に応じて変化しないので自分で設定する必要がある。
+          ここら辺はプラットフォームごとに調整が必要になることが多そうなので、あらかじめ OnPlatform を使ってみる。
+         -->
+        <OnPlatform x:TypeArguments="x:Int32" iOS="60" Android="60" />
+      </ListView.RowHeight>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <!--
+            <TextCell Text="{Binding Text}" Detail="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" />
+            なぜか Android で TextCell を使うと「Method 'TextView.SetTextAppearance' not found.」とのエラーが出て止まる。
+            ↓代わりに ViewCell で表現する。
+          -->
+          <ViewCell>
+            <StackLayout Padding="5" Orientation="Vertical">
+              <Label Text="{Binding Text}" FontSize="Large" />
+              <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" TextColor="Gray" />
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
   </StackLayout>
 </ContentPage>
