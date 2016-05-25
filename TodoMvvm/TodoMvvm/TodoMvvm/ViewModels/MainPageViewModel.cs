@@ -5,6 +5,7 @@ using Prism.Services;
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using TodoMvvm.Models;
@@ -29,7 +30,7 @@ namespace TodoMvvm.ViewModels
 
         public ReactiveProperty<TodoItem> SelectedItem { get; } = new ReactiveProperty<TodoItem>();
 
-        public MainPageViewModel(IPageDialogService pageDialogService)
+        public MainPageViewModel(INavigationService navigationService)
         {
             this.AddNewItem = this.NewItemsText
                 .Select(x => !string.IsNullOrWhiteSpace(x)) // NewItemsText の状況から bool に変換
@@ -46,13 +47,9 @@ namespace TodoMvvm.ViewModels
             // アイテムタップ時の動作を定義
             this.SelectedItem
                 .Where(item => item != null)
-                .Subscribe(async item => {
-                    if (await pageDialogService.DisplayAlert("削除します。よろしいですか？", item.Text, "はい", "いいえ")) {
-                        item.Delete = true;
-                        this.TodoItems.RemoveOnScheduler(item);
-                        await _todoItemRepository.SaveItemAsync(item);
-                    }
+                .Subscribe(item => {
                     this.SelectedItem.Value = null;
+                    navigationService.Navigate($"TodoDetailPage?id={item.ID}");
                 });
         }
 
@@ -63,6 +60,7 @@ namespace TodoMvvm.ViewModels
 
         public async void OnNavigatedTo(NavigationParameters parameters)
         {
+            Debug.WriteLine("[OnNavigateTo] MainPageViewModel");
             if (parameters.ContainsKey("title"))
                 Title = (string)parameters["title"] + " and Prism";
             // SQLite からデータを取得

@@ -4,13 +4,12 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="TodoMvvm.Views.MainPage"
-             Title="MainPage">
+             Title="{Binding Title}">
   
   <StackLayout>
     <StackLayout.Padding>
       <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
     </StackLayout.Padding>
-    <Label Text="{Binding Title}" />
     <StackLayout BackgroundColor="#f0f7ff" Padding="5" Orientation="Horizontal">
       <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
       <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />

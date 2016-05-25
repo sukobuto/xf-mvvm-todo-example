@@ -1,5 +1,6 @@
 ﻿using Prism.Unity;
 using TodoMvvm.Views;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -11,12 +12,14 @@ namespace TodoMvvm
         {
             InitializeComponent();
 
-            NavigationService.Navigate("MainPage?title=Hello%20from%20Xamarin.Forms");
+            NavigationService.Navigate("/NavigationPage/MainPage?title=TodoMvvm");
         }
 
         protected override void RegisterTypes()
         {
+            Container.RegisterTypeForNavigation<NavigationPage>();
             Container.RegisterTypeForNavigation<MainPage>();
+            Container.RegisterTypeForNavigation<TodoDetailPage>();
         }
     }
 }

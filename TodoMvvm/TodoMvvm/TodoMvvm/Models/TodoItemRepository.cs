@@ -24,7 +24,18 @@ namespace TodoMvvm.Models
         {
             return await Task.Run<IEnumerable<TodoItem>>(() => {
                 lock (Locker) {
-                    return _db.Table<TodoItem>().Where(m => m.Delete == false);
+                    return _db.Table<TodoItem>()
+                        .Where(m => m.Delete == false);
+                }
+            });
+        }
+
+        public async Task<TodoItem> FindFirstAsync(int id)
+        {
+            return await Task.Run<TodoItem>(() => {
+                lock (Locker) {
+                    return _db.Table<TodoItem>()
+                        .First(m => m.ID == id && m.Delete == false);
                 }
             });
         }

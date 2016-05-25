@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="TodoMvvm.Views.TodoDetailPage"
+             x:Name="page">
+  <StackLayout Padding="10">
+    <Frame BindingContext="{Binding TodoItem.Value}">
+      <StackLayout>
+        <Label Text="{Binding Text}" FontSize="Large" />
+        <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" TextColor="Gray" />
+        <StackLayout Orientation="Horizontal">
+          <Button Text="Delete" Command="Delete" />
+        </StackLayout>
+      </StackLayout>
+    </Frame>
+  </StackLayout>
+</ContentPage>
