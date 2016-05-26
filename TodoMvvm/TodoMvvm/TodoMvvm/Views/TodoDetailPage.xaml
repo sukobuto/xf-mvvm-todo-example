@@ -4,15 +4,31 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="TodoMvvm.Views.TodoDetailPage"
+             Title="{Binding TodoItem.Value.Text}"
              x:Name="page">
   <StackLayout Padding="10">
     <Frame BindingContext="{Binding TodoItem.Value}">
       <StackLayout>
-        <Label Text="{Binding Text}" FontSize="Large" />
-        <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" TextColor="Gray" />
-        <StackLayout Orientation="Horizontal">
-          <Button Text="Delete" Command="Delete" />
+        
+        <Entry Text="{Binding Text}" HorizontalOptions="FillAndExpand" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+          <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}"
+                 TextColor="Gray"/>
+          <Label TextColor="Gray">作成</Label>
         </StackLayout>
+        
+        <StackLayout Padding="0, 0, 0, 20">
+          <Label Text="メモ:" />
+          <Editor Text="{Binding Note}" HeightRequest="200" />
+        </StackLayout>
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+          <Button Text="Delete"
+                  Command="{Binding BindingContext.Delete, Source={x:Reference page}}" />
+          <Button Text="Save"
+                  Command="{Binding BindingContext.Save, Source={x:Reference page}}" />
+        </StackLayout>
+        
       </StackLayout>
     </Frame>
   </StackLayout>

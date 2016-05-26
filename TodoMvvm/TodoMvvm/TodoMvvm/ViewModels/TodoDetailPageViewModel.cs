@@ -19,11 +19,20 @@ namespace TodoMvvm.ViewModels
 
         public ReactiveProperty<TodoItem> TodoItem { get; } = new ReactiveProperty<TodoItem>();
 
+        public ReactiveCommand Save { get; } = new ReactiveCommand();
+
         public ReactiveCommand Delete { get; } = new ReactiveCommand();
 
         public TodoDetailPageViewModel(INavigationService navigationService, IPageDialogService pageDialogService)
         {
             this._navService = navigationService;
+
+            this.Save
+                .Subscribe(async _ => {
+                    var item = this.TodoItem.Value;
+                    await this._todoItemRepository.SaveItemAsync(item);
+                    await navigationService.GoBack();
+                });
 
             this.Delete
                 .Subscribe(async _ => {

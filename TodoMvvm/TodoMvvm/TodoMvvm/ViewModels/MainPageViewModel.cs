@@ -64,6 +64,7 @@ namespace TodoMvvm.ViewModels
             if (parameters.ContainsKey("title"))
                 Title = (string)parameters["title"] + " and Prism";
             // SQLite からデータを取得
+            this.TodoItems.ClearOnScheduler();
             this.TodoItems.AddRangeOnScheduler(await this._todoItemRepository.GetItemsAsync());
         }
     }
