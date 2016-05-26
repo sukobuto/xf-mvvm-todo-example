@@ -20,12 +20,12 @@ namespace TodoMvvm.Models
             _db.CreateTable<TodoItem>();
         }
 
-        public async Task<IEnumerable<TodoItem>> GetItemsAsync()
+        public async Task<IEnumerable<TodoItem>> GetItemsAsync(int parentID = 0)
         {
             return await Task.Run<IEnumerable<TodoItem>>(() => {
                 lock (Locker) {
                     return _db.Table<TodoItem>()
-                        .Where(m => m.Delete == false);
+                        .Where(m => m.Delete == false && m.ParentID == parentID);
                 }
             });
         }

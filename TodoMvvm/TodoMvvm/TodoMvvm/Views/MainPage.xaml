@@ -5,21 +5,24 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="TodoMvvm.Views.MainPage"
              Title="{Binding Title}">
-  
-  <StackLayout>
-    <StackLayout.Padding>
+
+  <ScrollView>
+    <ScrollView.Padding>
       <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
-    </StackLayout.Padding>
-    <StackLayout BackgroundColor="#f0f7ff" Padding="5" Orientation="Horizontal">
-      <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
-      <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />
+    </ScrollView.Padding>
+    <StackLayout>
+      <Label>Todo:</Label>
+      <StackLayout BackgroundColor="#f0f7ff" Padding="5" Orientation="Horizontal">
+        <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
+        <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />
+      </StackLayout>
+      <ListView ItemsSource="{Binding TodoItems}" SelectedItem="{Binding SelectedItem.Value, Mode=TwoWay}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Text}" Detail="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" />
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
     </StackLayout>
-    <ListView ItemsSource="{Binding TodoItems}" SelectedItem="{Binding SelectedItem.Value, Mode=TwoWay}">
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <TextCell Text="{Binding Text}" Detail="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" />
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
-  </StackLayout>
+  </ScrollView>
 </ContentPage>

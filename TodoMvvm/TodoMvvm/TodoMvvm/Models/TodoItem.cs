@@ -10,6 +10,8 @@ namespace TodoMvvm.Models
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
 
+        public int ParentID { get; set; } = 0;
+
         private string text;
         public string Text {
             get { return text; }
