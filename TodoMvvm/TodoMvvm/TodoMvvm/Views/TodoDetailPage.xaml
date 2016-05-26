@@ -6,30 +6,54 @@
              x:Class="TodoMvvm.Views.TodoDetailPage"
              Title="{Binding TodoItem.Value.Text}"
              x:Name="page">
-  <StackLayout Padding="10">
-    <Frame BindingContext="{Binding TodoItem.Value}">
-      <StackLayout>
-        
-        <Entry Text="{Binding Text}" HorizontalOptions="FillAndExpand" />
-        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-          <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}"
-                 TextColor="Gray"/>
-          <Label TextColor="Gray">作成</Label>
-        </StackLayout>
-        
-        <StackLayout Padding="0, 0, 0, 20">
-          <Label Text="メモ:" />
-          <Editor Text="{Binding Note}" HeightRequest="200" />
-        </StackLayout>
-        
-        <StackLayout Orientation="Horizontal" HorizontalOptions="End">
-          <Button Text="Delete"
-                  Command="{Binding BindingContext.Delete, Source={x:Reference page}}" />
-          <Button Text="Save"
-                  Command="{Binding BindingContext.Save, Source={x:Reference page}}" />
-        </StackLayout>
-        
+  <ScrollView>
+    <ScrollView.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </ScrollView.Padding>
+    <StackLayout>
+
+      <!--詳細-->
+      <ContentView Padding="10">
+        <Frame BindingContext="{Binding TodoItem.Value}">
+          <StackLayout>
+
+            <Entry Text="{Binding Text}" HorizontalOptions="FillAndExpand" />
+            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+              <Label Text="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}"
+                     TextColor="Gray"/>
+              <Label TextColor="Gray">作成</Label>
+            </StackLayout>
+
+            <StackLayout Padding="0, 0, 0, 20">
+              <Label Text="メモ:" />
+              <Editor Text="{Binding Note}" HeightRequest="150" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+              <Button Text="Delete"
+                      Command="{Binding BindingContext.Delete, Source={x:Reference page}}" />
+              <Button Text="Save"
+                      Command="{Binding BindingContext.Save, Source={x:Reference page}}" />
+            </StackLayout>
+
+          </StackLayout>
+        </Frame>
+      </ContentView>
+
+      <!--子アイテム-->
+      <Label>Todo Children:</Label>
+      <StackLayout BackgroundColor="#f0f7ff" Padding="5" Orientation="Horizontal">
+        <Entry HorizontalOptions="FillAndExpand" Text="{Binding NewItemsText.Value}" />
+        <Button WidthRequest="60" Text="Add" Command="{Binding AddNewItem}" />
       </StackLayout>
-    </Frame>
-  </StackLayout>
+      <ListView ItemsSource="{Binding TodoItems}" SelectedItem="{Binding SelectedItem.Value, Mode=TwoWay}">
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <TextCell Text="{Binding Text}" Detail="{Binding CreatedAt, StringFormat='{0:yyy/MM/dd hh:mm}'}" />
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+    </StackLayout>
+  </ScrollView>
 </ContentPage>
